@@ -35,7 +35,7 @@ def Resolver():
     if UsuarioE.get() and ContraseñaE.get() and NumeroE.get() and LinkE.get():
         Boton = Button(root,bg='#c33030', fg='#fff',text='Resolviendo...',font=('Bold',10),relief='flat')
         Boton.place(x=140, y=290)
-        qz.SignIn(UsuarioE.get(),ContraseñaE.get())
+        qz.SignIn(UsuarioE.get(),ContraseñaE.get(),NumeroE.get())
         time.sleep(3)        
         print('Executed')
         if 'write' in LinkE.get():

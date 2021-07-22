@@ -1,4 +1,5 @@
 from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
 import time
 import random
 import csv
@@ -7,10 +8,28 @@ nombre = input()
 nombre = nombre+'.csv'
 print("Url de la lista")
 url = input()
+print("User:")
+user = input();
+print("Pass:")
+password = input();
 diccionario = {
     }
 PATH = 'C:\Program Files (x86)\chromedriver.exe'
+
+def SignIn(user, password):
+    driver.get('https://quizlet.com/es')
+    Signin_button = driver.find_element_by_xpath('//*[@id="TopNavigationReactTarget"]/header/div/div[2]/div[3]/button[1]')
+    Signin_button.click()
+    user_blank = driver.find_element_by_id('username')
+    pass_blank = driver.find_element_by_id('password')
+    user_blank.send_keys(user)
+    pass_blank.send_keys(password)
+    pass_blank.send_keys(Keys.ENTER)
+    time.sleep(3)
+
 driver = webdriver.Chrome(PATH)
+SignIn(user, password);
+
 driver.get(url)
 altura = driver.execute_script("return document.body.scrollHeight")
 count = 0
@@ -19,7 +38,6 @@ while altura > 100:
   time.sleep(1)
   count += 500
   altura -= 500
-print('Something Else')
 definition = driver.find_elements_by_class_name('SetPageTerm-definitionText')
 words = driver.find_elements_by_class_name('SetPageTerm-wordText')
 for i,j in zip(definition,words):

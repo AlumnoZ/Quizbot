@@ -8,14 +8,15 @@ import csv
 PATH = 'C:\Program Files (x86)\chromedriver.exe'
 driver = webdriver.Chrome(PATH)
 actions = ActionChains(driver)
-maxcount = 1
+maxcount = 0
 
-with open('Lists/6.csv', 'r') as lista:
+        
+def SignIn(user, password, num):
+    global maxcount
+    with open('Lists/'+num+'.csv', 'r') as lista:
             csv_dict_reader = csv.DictReader(lista, delimiter='¿')
             for row in csv_dict_reader:
-                maxcount += 1
-maxcount = maxcount-2          
-def SignIn(user, password):
+                maxcount += 1 
     driver.get('https://quizlet.com/es')
     Signin_button = driver.find_element_by_xpath('//*[@id="TopNavigationReactTarget"]/header/div/div[2]/div[3]/button[1]')
     Signin_button.click()
