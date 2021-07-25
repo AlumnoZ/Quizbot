@@ -5,5 +5,5 @@ Use the list grabber to generate a .csv and put the .csv in the Lists/ folder an
 #Español
 # Quizbot
 Una simple app que te ayudara a resolver ejercicios de quizlet
-# Usage
+# Uso
 Use el listgrabber.py para generar un .csv y coloque el .csv en la carpeta Lists/ y luego use el quizbot.py para ejecutarlo, en la entrada "Numero", ingrese el nombre de su archivo .csv, por ejemplo, si su archivo .csv es "1.csv", ponga 1 allí.
