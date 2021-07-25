@@ -2,7 +2,7 @@
 A simple app that would help you solve the quizlet tests
 # Usage
 Use the list grabber to generate a .csv and put the .csv in the Lists/ folder and then use the quizbot.py to execute it, in the "Numero" input, put the name of your .csv file for example if your .csv file is "1.csv" put 1 in there 
-#Español
+# Español
 # Quizbot
 Una simple app que te ayudara a resolver ejercicios de quizlet
 # Uso
