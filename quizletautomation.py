@@ -13,10 +13,12 @@ maxcount = 0
         
 def SignIn(user, password, num):
     global maxcount
+    maxcount = 0
     with open('Lists/'+num+'.csv', 'r') as lista:
             csv_dict_reader = csv.DictReader(lista, delimiter='¿')
             for row in csv_dict_reader:
-                maxcount += 1 
+                maxcount += 1
+                print(maxcount)
     driver.get('https://quizlet.com/es')
     Signin_button = driver.find_element_by_xpath('//*[@id="TopNavigationReactTarget"]/header/div/div[2]/div[3]/button[1]')
     Signin_button.click()
@@ -45,23 +47,22 @@ def SolveWrite(url,nombreL):
             inputElement.send_keys(Keys.ENTER)  
             time.sleep(.5)
         count += 1
-    driver.close()
 def solvewrite(nombreL):
     with open('Lists/'+nombreL+'.csv', 'r') as lista:
             driver.implicitly_wait(3)
             csv_dict_reader = csv.DictReader(lista, delimiter='¿')
             try:
-                definition = driver.find_element_by_xpath('//*[@id="AssistantModeTarget"]/div/div/div[2]/div/div/div/div[1]/div/div[2]/div/div/div/div/div')
+                definition = driver.find_element_by_xpath('//*[@id="AssistantModeTarget"]/div/div/div[2]/div/div/article/div[1]/div/div[2]/div/div/div')
             except NoSuchElementException:
                 button = driver.find_element_by_xpath('//*[@id="AssistantModeTarget"]/div/div/div[2]/div/div/div/div/div/div[2]/div/button')
                 button.click()
                 time.sleep(1.5)
-            definition = driver.find_element_by_xpath('//*[@id="AssistantModeTarget"]/div/div/div[2]/div/div/div/div[1]/div/div[2]/div/div/div/div/div')
+            definition = driver.find_element_by_xpath('//*[@id="AssistantModeTarget"]/div/div/div[2]/div/div/article/div[1]/div/div[2]/div/div/div')
             for row in csv_dict_reader:
                 if row['definition'] == definition.text:
                     palabra = row['word']
                 
-            inputElement = driver.find_element_by_class_name('AutoExpandTextarea-textarea')
+            inputElement = driver.find_element_by_xpath('//*[@id="AssistantModeTarget"]/div/div/div[2]/div/div/article/div[2]/form/div[1]/label/input')
             inputElement.send_keys(palabra)
             time.sleep(.5)
             inputElement.send_keys(Keys.ENTER)  
@@ -73,10 +74,10 @@ def solvemultiple(nombreL):
     with open('Lists/'+nombreL+'.csv', 'r') as lista:
             csv_dict_reader = csv.DictReader(lista, delimiter='¿')
             try:
-                option1 = driver.find_element_by_xpath('//*[@id="AssistantModeTarget"]/div/div/div[2]/div/div/div/div/div[2]/div/div[2]/div/div[1]')
-                option2 = driver.find_element_by_xpath('//*[@id="AssistantModeTarget"]/div/div/div[2]/div/div/div/div/div[2]/div/div[2]/div/div[2]')
-                option3 = driver.find_element_by_xpath('//*[@id="AssistantModeTarget"]/div/div/div[2]/div/div/div/div/div[2]/div/div[2]/div/div[3]')
-                option4 = driver.find_element_by_xpath('//*[@id="AssistantModeTarget"]/div/div/div[2]/div/div/div/div/div[2]/div/div[2]/div/div[4]')
+                option1 = driver.find_element_by_xpath('//*[@id="AssistantModeTarget"]/div/div/div[2]/div/div/article/div[2]/div/section[1]')
+                option2 = driver.find_element_by_xpath('//*[@id="AssistantModeTarget"]/div/div/div[2]/div/div/article/div[2]/div/section[2]')
+                option3 = driver.find_element_by_xpath('//*[@id="AssistantModeTarget"]/div/div/div[2]/div/div/article/div[2]/div/section[3]')
+                option4 = driver.find_element_by_xpath('//*[@id="AssistantModeTarget"]/div/div/div[2]/div/div/article/div[2]/div/section[4]')
             except NoSuchElementException:
                 driver.implicitly_wait(10)
                 option1 = driver.find_element_by_xpath('//*[@id="AssistantModeTarget"]/div/div/div[2]/div/div/article/div[2]/div/div[1]')
@@ -107,30 +108,49 @@ def SolveLearn(url,nombreL):
     driver.get(url)
     time.sleep(3)
     try:
-        Continuar = driver.find_element_by_class_name('OnboardingView-gotItButton')
+        continue1 = driver.find_element_by_xpath('//*[@id="StudyPathTarget"]/div/div[2]/div/div/div/div/div/button')
     except NoSuchElementException:
+        continue1 = None
+        print("Continue not there")
+    if continue1 != None:
+        continue1.click()
+    try:
+        skip = driver.find_element_by_xpath('//*[@id="StudyPathTarget"]/div/div[2]/div/div/div/div/div/div[2]/div[2]/div/div[1]/button')
+    except NoSuchElementException:
+        skip = None
+        print("Skip not there")
+    if skip != None:
+        skip.click()
+    try:
         Continuar = driver.find_element_by_xpath('//*[@id="AssistantModeTarget"]/div/div/div[2]/div/div/article/button')
-    Continuar.click()      
-    while count < maxcount*2:
+    except NoSuchElementException:
+        Continuar = None
+        print("Continuar not there")
+    if Continuar != None:
+        Continuar.click()      
+    while count <= maxcount*2:
         try:
             try:
                 solvemultiple(nombreL)
             except NoSuchElementException:
                 solvewrite(nombreL)
         except NoSuchElementException:
+            print("Trying to find continue")
+            driver.implicitly_wait(2)
             try:
-                boton = driver.find_element_by_class_name('//*[@id="AssistantModeTarget"]/div/div/div[2]/div/div/div/div/div/button')
+                boton = driver.find_element_by_xpath('/html/body/div[3]/main/div/div/div/div[2]/div/div/div/div[3]/div/div/button')
             except:
-                boton = driver.find_element_by_class_name('//*[@id="AssistantModeTarget"]/div/div/div[2]/div/div/div/div/div/div[2]/div/button')
-            boton.click()
+                boton = None
+                print("NO button")
+            if boton != None:
+                boton.click()
     print('Solved!')
-    driver.close()
 def SolveSpell(url,nombreL):
     count = 0
     driver.get(url)
     palabra=""
     time.sleep(2)
-    while count < maxcount*2:
+    while count <= maxcount*2+5:
         
         with open('Lists/'+nombreL+'.csv', 'r') as lista:
             csv_dict_reader = csv.DictReader(lista, delimiter='¿')
@@ -154,6 +174,5 @@ def SolveSpell(url,nombreL):
                 button.click()
         count += 1
     print('Solved!') 
-    driver.close()
 
 

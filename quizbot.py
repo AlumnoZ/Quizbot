@@ -6,7 +6,7 @@ import threading
 from selenium.common.exceptions import NoSuchElementException
 root = Tk()
 user = 'Usuario:'
-#root.resizable(width=False, height=False)
+root.resizable(width=False, height=False)
 root.geometry('480x325')
 root.title('Quizbot')
 root.configure(bg='#282e3e')
@@ -37,19 +37,17 @@ def Resolver():
         Boton.place(x=140, y=290)
         qz.SignIn(UsuarioE.get(),ContraseñaE.get(),NumeroE.get())
         time.sleep(3)        
-        print('Executed')
         if 'write' in LinkE.get():
             qz.SolveWrite(LinkE.get(),NumeroE.get())
         if 'learn' in LinkE.get():
             qz.SolveLearn(LinkE.get(),NumeroE.get())
         if 'spell' in LinkE.get():
             qz.SolveSpell(LinkE.get(),NumeroE.get())
-        else:
-            Boton = Button(root,bg='#c33030', fg='#fff',text='Resolver',font=('Bold',10),relief='flat')
-            Boton.place(x=140, y=290)
-    else:  
-        Boton = Button(root,bg='#c33030', fg='#fff',text='Resolver',font=('Bold',10),relief='flat')
+        Boton.destroy()
+        Boton = Button(root,command=Recibir,bg='#c33030', fg='#fff',text='Resolver',font=('Bold',10),relief='flat')
         Boton.place(x=140, y=290)
+        print("Done")
+
 def Recibir():
     th = threading.Thread(target=Resolver)
     th.start()

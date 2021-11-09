@@ -1,5 +1,6 @@
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
+from selenium.common.exceptions import NoSuchElementException
 import time
 import random
 import csv
@@ -28,9 +29,15 @@ def SignIn(user, password):
     time.sleep(3)
 
 driver = webdriver.Chrome(PATH)
-SignIn(user, password);
+SignIn(user, password)
 
 driver.get(url)
+driver.implicitly_wait(2)
+try:
+    cerrar = driver.find_element_by_xpath("/html/body/div[9]/div/div[1]/div/button")
+    cerrar.click()
+except NoSuchElementException:
+    print("Nothing to close")
 altura = driver.execute_script("return document.body.scrollHeight")
 count = 0
 while altura > 100:
@@ -43,7 +50,7 @@ words = driver.find_elements_by_class_name('SetPageTerm-wordText')
 for i,j in zip(definition,words):
  diccionario[j.text] = i.text
 
-with open(nombre, 'w') as new_file:
+with open("Lists/"+nombre, 'w') as new_file:
    field_names = ['word', 'definition']
    csv_writer = csv.DictWriter(new_file, fieldnames = field_names, delimiter='¿' )
    csv_writer.writeheader()
