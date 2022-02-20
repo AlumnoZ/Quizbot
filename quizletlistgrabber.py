@@ -37,6 +37,11 @@ try:
     cerrar = driver.find_element_by_xpath("/html/body/div[9]/div/div[1]/div/button")
     cerrar.click()
 except NoSuchElementException:
+        try:
+            cerrar2 = driver.find_element_by_xpath("/html/body/div[12]/div/div/div[1]")
+            cerrar2.click()
+        except NoSuchElementException:
+            print("Nothing to close")
     print("Nothing to close")
 altura = driver.execute_script("return document.body.scrollHeight")
 count = 0
